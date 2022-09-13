@@ -1,0 +1,41 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <form class="form-inline" method="get" action="/search">
+        <div style="margin:auto; width: 70%; display: flex;justify-content: center;">
+            <div class="form-group mx-sm-3 mb-2" style="">
+                <input type="text" name="id2" class="form-control" style="" th:value="${summoner.name}"/>
+            </div>
+            <div style="">
+                <input type="submit" value="search" class="btn btn-primary mb-2" style=""/>
+            </div>
+        </div>
+    </form>
+    <div>
+        <div>
+            <img alt="아이콘" th:src="${imgURL}">
+            <span th:text="${summoner.summonerLevel}"></span>
+        </div>
+        <span th:text="${summoner.name}"></span>
+    </div>
+
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>챔피언</th>
+            <th>레벨</th>
+            <th>숙련도</th>
+        </tr>
+        </thead>
+        <tr th:each="Championmastery : ${ChampionmasteryList}">
+            <td> <img alt="아이콘" th:src="|https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/${Championmastery.championName}.png|">
+                <p th:text="${Championmastery.championkName}"> </td>
+            <td th:text="${Championmastery.championLevel}"></td>
+            <td th:text="${Championmastery.championPoints}"></td>
+        </tr>
+    </table>
+    <th:block th:each="match : ${matches}">
+        <span th:text="${match}">none</span>
+    </th:block>
+</div>
+</html>

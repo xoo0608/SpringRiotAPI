@@ -1,0 +1,14 @@
+<html layout:decorate="~{layout}">
+    <div layout:fragment="content" class="container my-3">
+        <form class="form-inline" method="get" action="/search">
+            <div style="margin:auto; width: 70%; display: flex;justify-content: center;">
+                <div class="form-group mx-sm-3 mb-2" style="">
+                    <input type="text" name="id2" class="form-control" style="" th:value="${id2}"/>
+                </div>
+                <div style="">
+                    <input type="submit" value="search" class="btn btn-primary mb-2" style=""/>
+                </div>
+            </div>
+        </form>
+    </div>
+</html>
