@@ -1,5 +1,10 @@
 package com.example.chan.champion;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Championmastery {
 
     private String championkName;
@@ -19,34 +24,6 @@ public class Championmastery {
         this.championId = championId;
         this.championLevel = championLevel;
         this.championPoints = championPoints;
-    }
-
-    public void setChampionkName(String championkName){
-        this.championkName =championkName;
-    }
-    public void setChampionName(String championName){
-        this.championName =championName;
-    }
-    public void setChampionId(int championId){
-        this.championId = championId;
-    }
-    public void setChampionLevel (int championLevel){
-        this.championLevel = championLevel ;
-    }
-    public void setChampionPoints(int championPoints){
-        this.championPoints = championPoints;
-    }
-
-    public String getChampionkName(){ return championkName; }
-    public String getChampionName(){ return championName; }
-    public int getChampionId(){
-        return championId;
-    }
-    public int getChampionLevel(){
-        return championLevel;
-    }
-    public int getChampionPoints(){
-        return championPoints;
     }
 
     @Override
