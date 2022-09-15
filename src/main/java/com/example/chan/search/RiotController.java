@@ -73,7 +73,8 @@ public class RiotController {
             model.addAttribute("imgURL", "https://opgg-static.akamaized.net/images/profile_icons/profileIcon"+temp.getProfileIconId()+".jpg?image=q_auto&image=q_auto,f_webp,w_auto&v=1661751970709");
         }
         else{
-            return "index";
+            model.addAttribute("id2", SummonerName);
+            return "searcherror";
         }
 
         //makechampiondb();
