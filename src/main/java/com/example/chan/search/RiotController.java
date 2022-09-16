@@ -6,6 +6,7 @@ import com.example.chan.champion.Championmastery;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ public class RiotController {
 
     @RequestMapping("/")
     public String index(){
+        getmatchdata("KR_6130047848");
         return "index";
     }
 
@@ -256,6 +258,40 @@ public class RiotController {
             System.out.println(e.getMessage());
         }
         return;
+    }
+
+    public boolean getmatchdata(String matchid){
+        BufferedReader br = null;
+        String chamname = null;
+        try {
+            String urlstr = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchid + "?api_key=" + API_KEY;
+            URL url = new URL(urlstr);
+            HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+            urlconnection.setRequestMethod("GET");
+            br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8")); // 여기에 문자열을 받아와라.
+            String result = "";
+            String line;
+            while ((line = br.readLine()) != null) {
+                result = result + line;
+            }
+            //System.out.println(result);
+            JSONObject jObject = new JSONObject(result);
+            JSONObject info = jObject.getJSONObject("info");
+            JSONArray participants = info.getJSONArray("participants");
+            System.out.println(participants);
+
+            if (!participants.isEmpty()){
+                for(int i=0; i<participants.length(); i++){
+                    JSONObject jsonObj = (JSONObject)participants.get(i);
+                    System.out.println(jsonObj.getString("summonerName") + jsonObj.getBoolean("win"));
+                }
+            }
+
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 
