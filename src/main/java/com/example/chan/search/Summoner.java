@@ -3,32 +3,35 @@ package com.example.chan.search;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+
 @Getter
 @Setter
+@Entity
 public class Summoner {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer dbid;
+    @Column
     private int profileIconId;
+    @Column(columnDefinition = "TEXT")
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String puuid;
+    @Column
     private long summonerLevel;
+    @Column
     private long revisionDate;
+    @Column(columnDefinition = "TEXT")
     private String id;
+    @Column(columnDefinition = "TEXT")
     private String accountId;
+    @Column
+    private int win;
+    @Column
+    private int lose;
 
-    public Summoner() {
-
-    }
-
-    public Summoner(int profileIconId, String name, String puuid, long summonerLevel, long revisionDate, String id,
-                    String accountId) {
-        super();
-        this.profileIconId = profileIconId;
-        this.name = name;
-        this.puuid = puuid;
-        this.summonerLevel = summonerLevel;
-        this.revisionDate = revisionDate;
-        this.id = id;
-        this.accountId = accountId;
-    }
     @Override
     public String toString() {
         return "Summoner [profileIconId=" + profileIconId + ", name=" + name + ", puuid=" + puuid + ", summonerLevel="

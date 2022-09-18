@@ -34,6 +34,8 @@ public class RiotController {
     @Value("${RIOT_API_KEY}")
     private String API_KEY;
     private final ChampionService championService;
+    private final SummonerService summonerService;
+
 
     @RequestMapping("/")
     public String index(){
@@ -69,6 +71,7 @@ public class RiotController {
         if(temp != null){
             List<Championmastery> chlist = getchampmas1(temp.getId());
             List<String> matches = getmatchs(temp.getPuuid());
+            System.out.println(this.summonerService.findname("혜 찬"));
             model.addAttribute("matches", matches);
             model.addAttribute("ChampionmasteryList", chlist);
             model.addAttribute("summoner", temp);
@@ -108,7 +111,18 @@ public class RiotController {
             long revisionDate = k.get("revisionDate").getAsLong();
             String id = k.get("id").getAsString();
             String accountId = k.get("accountId").getAsString();
-            temp = new Summoner(profileIconId, name, puuid, summonerLevel, revisionDate, id, accountId);
+            //temp = new Summoner(profileIconId, name, puuid, summonerLevel, revisionDate, id, accountId, 2200, 1100);
+            temp = new Summoner();
+            temp.setProfileIconId(profileIconId);
+            temp.setName(name);
+            temp.setPuuid(puuid);
+            temp.setSummonerLevel(summonerLevel);
+            temp.setRevisionDate(revisionDate);
+            temp.setId(id);
+            temp.setAccountId(accountId);
+            temp.setWin(2200);
+            temp.setLose(1100);
+            //this.summonerService.create(temp);
             //System.out.println(temp);
         }catch(Exception e){
             System.out.println(e.getMessage());
