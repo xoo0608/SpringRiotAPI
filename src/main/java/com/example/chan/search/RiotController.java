@@ -39,7 +39,11 @@ public class RiotController {
 
     @RequestMapping("/")
     public String index(){
-        getmatchdata("KR_6130047848");
+        //getmatchdata("KR_6130047848");
+//        Optional<Summoner> Su = this.summonerService.findname("혜 찬");
+//        Summoner s = Su.get();
+//        s.setLose(2000);
+//        this.summonerService.changeSummoner(s);
         return "index";
     }
 
