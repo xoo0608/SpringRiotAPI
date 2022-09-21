@@ -10,11 +10,9 @@ import javax.persistence.*;
 @Entity
 public class Summoner {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer dbid;
     @Column
     private int profileIconId;
+    @Id
     @Column(columnDefinition = "TEXT")
     private String name;
     @Column(columnDefinition = "TEXT")

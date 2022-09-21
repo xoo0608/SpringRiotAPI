@@ -70,7 +70,7 @@ public class RiotController {
 
     @GetMapping("/search")
     public String searchSummoner3(Model model, @RequestParam String id2) {
-        String SummonerName = id2.replaceAll(" ", "%20");
+        String SummonerName = id2;
         Summoner temp= getsummonerjson(SummonerName);
         if(temp != null){
             List<Championmastery> chlist = getchampmas1(temp.getId());
@@ -92,9 +92,63 @@ public class RiotController {
     }
 
     public Summoner getsummonerjson(String SummonerName){
+        Optional<Summoner> su = this.summonerService.findname(SummonerName);
+        Summoner temp = null;
+        if(!su.isEmpty()){
+            temp = su.get();
+        }else {
+            BufferedReader br = null;
+            System.out.println("getjson");
+            try {
+                //SummonerName.replaceAll(" ", "%20");
+                String urlstr = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + SummonerName.replaceAll(" ", "%20") + "?api_key=" + API_KEY;
+                URL url = new URL(urlstr);
+                HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+                urlconnection.setRequestMethod("GET");
+                br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8")); // 여기에 문자열을 받아와라.
+                String result = "";
+                String line;
+                while ((line = br.readLine()) != null) {
+                    result = result + line;
+                }
+
+                JsonParser jsonParser = new JsonParser();
+                JsonObject k = (JsonObject) jsonParser.parse(result);
+                int profileIconId = k.get("profileIconId").getAsInt();
+                String name = k.get("name").getAsString();
+                String puuid = k.get("puuid").getAsString();
+                long summonerLevel = k.get("summonerLevel").getAsLong();
+                long revisionDate = k.get("revisionDate").getAsLong();
+                String id = k.get("id").getAsString();
+                String accountId = k.get("accountId").getAsString();
+                //temp = new Summoner(profileIconId, name, puuid, summonerLevel, revisionDate, id, accountId, 2200, 1100);
+                temp = new Summoner();
+                temp.setProfileIconId(profileIconId);
+                temp.setName(name);
+                temp.setPuuid(puuid);
+                temp.setSummonerLevel(summonerLevel);
+                temp.setRevisionDate(revisionDate);
+                temp.setId(id);
+                temp.setAccountId(accountId);
+                temp.setWin(0);
+                temp.setLose(0);
+                this.summonerService.create(temp);
+                //System.out.println(temp);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return temp;
+    }
+
+    public void updatesummonerdb(String SummonerName){
+        Summoner temp = null;
+        Optional<Summoner> su = this.summonerService.findname(SummonerName);
+        temp = su.get();
         BufferedReader br = null;
-        Summoner temp= null;
+        //System.out.println("getjson");
         try {
+            SummonerName.replaceAll(" ", "%20");
             String urlstr = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + SummonerName + "?api_key=" + API_KEY;
             URL url = new URL(urlstr);
             HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
@@ -115,8 +169,7 @@ public class RiotController {
             long revisionDate = k.get("revisionDate").getAsLong();
             String id = k.get("id").getAsString();
             String accountId = k.get("accountId").getAsString();
-            //temp = new Summoner(profileIconId, name, puuid, summonerLevel, revisionDate, id, accountId, 2200, 1100);
-            temp = new Summoner();
+
             temp.setProfileIconId(profileIconId);
             temp.setName(name);
             temp.setPuuid(puuid);
@@ -124,14 +177,13 @@ public class RiotController {
             temp.setRevisionDate(revisionDate);
             temp.setId(id);
             temp.setAccountId(accountId);
-            temp.setWin(2200);
-            temp.setLose(1100);
-            //this.summonerService.create(temp);
+            temp.setWin(0);
+            temp.setLose(0);
+            this.summonerService.changeSummoner(temp);
             //System.out.println(temp);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return temp;
     }
 
     public List<Championmastery> getchampmas1(String ids){
