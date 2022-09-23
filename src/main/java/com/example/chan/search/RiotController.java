@@ -46,6 +46,12 @@ public class RiotController {
 //        this.summonerService.changeSummoner(s);
         return "index";
     }
+    @RequestMapping("/suupdate")
+    public String updatesummoner(Model model, @RequestParam("id2")String names) throws UnsupportedEncodingException {
+        updatesummonerdb(names);
+        String SummonerName = names.replaceAll(" ", "%20");
+        return "redirect:/search?id2="+ URLEncoder.encode(SummonerName, "UTF-8");
+    }
 
     @RequestMapping(value="/search", method= RequestMethod.POST)
     public String searchSummoner1(Model model, @RequestParam("id1")String names) throws UnsupportedEncodingException {
@@ -67,6 +73,8 @@ public class RiotController {
 
         return "SearchResult";
     }
+
+
 
     @GetMapping("/search")
     public String searchSummoner3(Model model, @RequestParam String id2) {
